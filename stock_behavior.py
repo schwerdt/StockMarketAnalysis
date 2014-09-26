@@ -60,8 +60,10 @@ def determine_day(date_string):
 
   #Add up the number of days since Jan 1 1981, due to the year difference
   #1980 was a leap year
+  #Count the number of leap years
+  num_leapyears = sum([isLeapYear(this_year) for this_year in range(1981,year)])
   num_years = year - 1981
-  year_offset = num_years*365 + (num_years/4)  #This is the extra day from a leap year
+  year_offset = num_years*365 + num_leapyears  #The 2nd term is the extra days from the leap year
  
   month_offset = 0
   #Number of days until the month is reached
@@ -72,7 +74,7 @@ def determine_day(date_string):
       month_offset = month_offset + 30
     elif (mo+1) == 2:
       #We need to figure out if it is a leap year to decide if we should add 28 or 29
-      if year%4 == 0:  #Leap year!
+      if isLeapYear(year):  #Leap year!
         month_offset = month_offset + 29
       else:
         month_offset = month_offset + 28
@@ -104,7 +106,21 @@ def determine_day(date_string):
 
 
 
+
+#Return a logical: True if the tested year is a leap year; False if it is not.
+def isLeapYear(year):
+  #The year is a leap year if it can be divided by 4 but not 100.  The exception to this rule 
+  #occurs when the number can be divided by 400.  
+  if year%400 == 0:
+    leapyear = True
+  elif year%100 == 0:
+    leapyear = False
+  elif year%4 == 0:
+    leapyear = True
+  else:
+    leapyear = False
   
+  return leapyear
   
 
   
